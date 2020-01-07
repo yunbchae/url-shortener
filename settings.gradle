@@ -1,1 +1,3 @@
 rootProject.name = 'shortener'
+
+include 'url-shortener-api'
