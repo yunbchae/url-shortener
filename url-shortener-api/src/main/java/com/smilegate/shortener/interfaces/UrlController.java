@@ -24,6 +24,7 @@ public class UrlController {
         response.sendRedirect(urlService.getUrl(shortUrl).getLongUrl());
     }
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/shortUrl")
     public ResponseEntity<String> createShortenUrl(@RequestBody Url url) throws URISyntaxException {
         String shortUrl = urlService.getShortUrl(url.getLongUrl());

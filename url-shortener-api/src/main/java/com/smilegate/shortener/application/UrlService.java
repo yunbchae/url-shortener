@@ -3,10 +3,14 @@ package com.smilegate.shortener.application;
 import com.smilegate.shortener.domain.Url;
 import com.smilegate.shortener.domain.UrlRepository;
 import com.smilegate.shortener.utils.Base62Util;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UrlService {
+
+    @Value("${server.port}")
+    private String port;
 
     private UrlRepository urlRepository;
     private Long index;
@@ -30,7 +34,7 @@ public class UrlService {
             index++;
         }
 
-        return "localhost:8080/" +url.getShortUrl();
+        return "localhost:"+port+"/"+url.getShortUrl();
     }
 
 }
