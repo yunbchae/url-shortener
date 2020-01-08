@@ -21,14 +21,14 @@ public class UrlController {
 
     @GetMapping("/{shortUrl}")
     public void redirect(@PathVariable("shortUrl") String shortUrl, HttpServletResponse response) throws IOException {
-        response.sendRedirect(urlService.getUrl(shortUrl).getLongUrl());
+        response.sendRedirect(urlService.getLongUrl(shortUrl));
     }
 
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/shortUrl")
     public ResponseEntity<String> createShortenUrl(@RequestBody Url url) throws URISyntaxException {
         String shortUrl = urlService.getShortUrl(url.getLongUrl());
-        URI location = new URI("");
+        URI location = new URI("/"+shortUrl);
         return ResponseEntity.created(location).body(shortUrl);
     }
 

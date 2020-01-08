@@ -20,21 +20,38 @@ public class UrlService {
         this.index = urlRepository.countAll()+1;
     }
 
-    public Url getUrl(String shortUrl) {
-        return urlRepository.findByShortUrl(shortUrl);
+    public String getLongUrl(String shortUrl) {
+        return "http://"+urlRepository.findByShortUrl(shortUrl)
+                .getLongUrl();
     }
 
     public String getShortUrl(String longUrl) {
+        longUrl = removePrefix(longUrl);
+
         Url url =  urlRepository.findByLongUrl(longUrl);
-
-        if(url==null) {
-            String shortUrl = Base62Util.longTOString(index);
-            url = new Url(index, longUrl, shortUrl);
-            urlRepository.save(url);
-            index++;
-        }
-
+        if(url==null) url = createShortUrl(longUrl);
         return "localhost:"+port+"/"+url.getShortUrl();
+    }
+
+    private Url createShortUrl(String longUrl) {
+        String shortUrl = Base62Util.longTOString(index);
+        Url url = new Url(index, longUrl, shortUrl);
+        urlRepository.save(url);
+        index++;
+        return url;
+    }
+
+    private String removePrefix(String longUrl) {
+        StringBuilder sb = new StringBuilder(longUrl);
+        if(longUrl.startsWith("http://")) {
+            sb.delete(0, 7);
+        }else if(longUrl.startsWith("https://")) {
+            sb.delete(0, 8);
+        }
+        if(sb.toString().startsWith("www.")){
+            sb.delete(0,4);
+        }
+        return sb.toString();
     }
 
 }

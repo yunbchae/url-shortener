@@ -15,7 +15,10 @@ public class UrlRepositoryImpl implements UrlRepository {
 
     @Override
     public Long countAll() {
-        return jdbcTemplate.queryForObject("select count(*) from url;", Long.class);
+        return jdbcTemplate.queryForObject(
+                "select count(*) from url;",
+                Long.class
+        );
     }
 
     @Override
@@ -53,7 +56,10 @@ public class UrlRepositoryImpl implements UrlRepository {
     @Override
     public int save(Url url) {
         return jdbcTemplate.update("insert into url values(?,?,?);",
-                url.getId(), url.getLongUrl(), url.getShortUrl());
+                url.getId(),
+                url.getLongUrl(),
+                url.getShortUrl()
+        );
     }
 
 }

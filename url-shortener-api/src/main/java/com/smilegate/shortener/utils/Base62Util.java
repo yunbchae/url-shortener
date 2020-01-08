@@ -3,6 +3,7 @@ package com.smilegate.shortener.utils;
 public class Base62Util {
 
     private final static int BASE = 62;
+    private final static int DIGIT = 7;
 
     private final static char[] base62 = {
             'G', '3', 'c', 'd', 'Z', 'r', 'b', 'I', 'g', '0', 'i', 'l', 'p',
@@ -13,6 +14,7 @@ public class Base62Util {
     };
 
     public static String longTOString(Long index) {
+        index += (long)Math.pow(62, DIGIT -1);
         StringBuilder result = new StringBuilder();
 
         while(index>0) {
@@ -20,7 +22,7 @@ public class Base62Util {
             index /= BASE;
         }
 
-        return result.toString();
+        return result.reverse().toString();
     }
 
 }
