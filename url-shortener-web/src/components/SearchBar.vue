@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <div class="search">
-            <input type="text" class="searchTerm" placeholder="Shorten your link" v-model="longUrl" />
+            <input type="text" class="searchTerm" placeholder="Shorten your link" v-model="longUrl" @keypress.enter="shortenUrl" />
             <button type="submit" class="searchButton" @click="shortenUrl">✂</button>
         </div>
     </div>
@@ -16,7 +16,15 @@
         }),
         methods: {
             async shortenUrl() {
-                await this.$store.dispatch('getShortUrl', {longUrl: this.longUrl});
+                if(this.checkUrl()){
+                    await this.$store.dispatch('getShortUrl', {longUrl: this.longUrl});
+                }else {
+                    this.$store.commit('setIsUrl', false);
+                }
+            },
+            checkUrl() {
+                let regex = /^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?$/;
+                return regex.test(this.longUrl);
             }
         }
     }

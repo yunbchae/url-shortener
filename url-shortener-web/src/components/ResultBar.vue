@@ -13,7 +13,7 @@
     export default {
         name: "ResultBar",
         computed: {
-          ...mapGetters(['getShortUrl'])
+          ...mapGetters(['getShortUrl', 'getIsUrl'])
         },
         data: () => ({
             shortUrl: ""
@@ -24,6 +24,7 @@
                 copyText.select();
                 copyText.setSelectionRange(0, 99999);
                 document.execCommand("copy");
+                this.$store.commit('setIsCopied', true);
             }
         },
         created() {
@@ -32,7 +33,15 @@
                 (shortUrl) => {
                     this.shortUrl = shortUrl;
                 }
-            )
+            );
+            this.$store.watch(
+                () => this.getIsUrl,
+                (isUrl) => {
+                    if(!isUrl){
+                        this.$store.commit('setShortUrl', "");
+                    }
+                }
+            );
         }
     }
 </script>
